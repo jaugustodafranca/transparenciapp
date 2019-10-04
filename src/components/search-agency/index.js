@@ -14,6 +14,17 @@ const SearchAgency = () => {
       <Text style={styles.headerTitle}>Resultados:</Text>
     </View>
   );
+
+  const renderItemList = ({item}) => (
+    <TouchableOpacity
+      style={styles.boxItem}
+      onPress={() => console.log(item.id)}>
+      <Text style={styles.boxText}>
+        {item.id} - {item.nome}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View>
       <Text style={styles.title}>Procurar Orgão do Governo Federal: </Text>
@@ -27,15 +38,7 @@ const SearchAgency = () => {
         data={falseList}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={tableHeader()}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={styles.boxItem}
-            onPress={() => console.log(item.id)}>
-            <Text style={styles.boxText}>
-              {item.id} - {item.nome}
-            </Text>
-          </TouchableOpacity>
-        )}
+        renderItem={renderItemList}
         keyExtractor={item => item.id}
       />
     </View>
