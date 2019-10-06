@@ -13,10 +13,30 @@ import styles from './styles';
 
 const SearchAgency = props => {
   const falseList = [
-    {id: '1', nome: 'Secretaria de Segurança de Santa Catarina'},
-    {id: '2', nome: 'Universidade Federal de Santa Catarina'},
-    {id: '3', nome: 'Secretaria de Desenvolvimento'},
+    {
+      codigo: '26219',
+      descricao: 'Centro Federal de Educação Tecnológica de Santa Catarina',
+      codigoDescricaoFormatado:
+        '26219 - Centro Federal de Educação Tecnológica de Santa Catarina',
+    },
+    {
+      codigo: '26246',
+      descricao: 'Universidade Federal de Santa Catarina',
+      codigoDescricaoFormatado:
+        '26246 - Universidade Federal de Santa Catarina',
+    },
+    {
+      codigo: '26438',
+      descricao: 'Instituto Federal de Santa Catarina',
+      codigoDescricaoFormatado: '26438 - Instituto Federal de Santa Catarina',
+    },
+    {
+      codigo: '96220',
+      descricao: 'Estado de Santa Catarina',
+      codigoDescricaoFormatado: '96220 - Estado de Santa Catarina',
+    },
   ];
+
   const tableHeader = () => (
     <View style={styles.headerList}>
       <Text style={styles.headerTitle}>Resultados:</Text>
@@ -26,10 +46,8 @@ const SearchAgency = props => {
   const renderItemList = ({item}) => (
     <TouchableOpacity
       style={styles.boxItem}
-      onPress={() => props.navigation.navigate('SearchTrip')}>
-      <Text style={styles.boxText}>
-        {item.id} - {item.nome}
-      </Text>
+      onPress={() => props.navigation.navigate('SearchTrip', {agency: item})}>
+      <Text style={styles.boxText}>{item.codigoDescricaoFormatado}</Text>
     </TouchableOpacity>
   );
 
@@ -49,7 +67,7 @@ const SearchAgency = props => {
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={tableHeader()}
           renderItem={renderItemList}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.codigo}
         />
       </View>
     </View>
