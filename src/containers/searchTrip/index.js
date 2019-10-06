@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, Button, Text} from 'react-native';
 import DatePicker from '../../components/datepicker';
+import {connect} from 'react-redux';
+import * as Actions from '../../actions';
 
 class SearchTrip extends Component {
   constructor(props) {
@@ -64,7 +66,24 @@ class SearchTrip extends Component {
   };
 
   navigate = () => {
-    const {departureDateBegin, arrivalDateEnd} = this.state;
+    const {
+      agency,
+      departureDateBegin,
+      departureDateEnd,
+      arrivalDateBegin,
+      arrivalDateEnd,
+    } = this.state;
+
+    console.log(this.props.page);
+
+    this.props.searchForTrips(
+      agency.codigo,
+      this.props.page,
+      departureDateBegin,
+      departureDateEnd,
+      arrivalDateBegin,
+      arrivalDateEnd,
+    );
     this.props.navigation.navigate('TripResult', {
       departureDateBegin,
       arrivalDateEnd,
@@ -110,4 +129,33 @@ class SearchTrip extends Component {
   }
 }
 
-export default SearchTrip;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  searchForTrips: (
+    agencyCode,
+    page,
+    departureDateBegin,
+    departureDateEnd,
+    arrivalDateBegin,
+    arrivalDateEnd,
+  ) =>
+    dispatch(
+      Actions.fetchTrips(
+        agencyCode,
+        page,
+        departureDateBegin,
+        departureDateEnd,
+        arrivalDateBegin,
+        arrivalDateEnd,
+      ),
+    ),
+});
+function mapStateToProps(state) {
+  return {
+    page: state.transparencia.agencies.page,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SearchTrip);
