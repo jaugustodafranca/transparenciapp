@@ -79,6 +79,7 @@ class SearchTrip extends Component {
     this.props.searchForTrips(
       agency.codigo,
       this.props.page,
+
       departureDateBegin,
       departureDateEnd,
       arrivalDateBegin,
