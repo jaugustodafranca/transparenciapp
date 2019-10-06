@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Button, Platform} from 'react-native';
+import {View, Button, Text} from 'react-native';
 import DatePicker from '../../components/datepicker';
 
 class SearchTrip extends Component {
@@ -11,6 +11,7 @@ class SearchTrip extends Component {
       departureDateEnd: null,
       arrivalDateBegin: null,
       arrivalDateEnd: null,
+      validateMessage: null,
     };
   }
 
@@ -18,6 +19,42 @@ class SearchTrip extends Component {
     return {
       title: navigation.getParam('agency', {descricao: ''}).descricao,
     };
+  };
+
+  validate = () => {
+    const {
+      departureDateBegin,
+      departureDateEnd,
+      arrivalDateBegin,
+      arrivalDateEnd,
+    } = this.state;
+    if (
+      !departureDateBegin ||
+      !departureDateEnd ||
+      !arrivalDateEnd ||
+      !arrivalDateBegin
+    ) {
+      this.setState({
+        validateMessage: 'Preencha todos os campos',
+      });
+    } else if (departureDateEnd < departureDateBegin) {
+      this.setState({
+        validateMessage: 'Data Ida Fim menor que Data Ida Inicio',
+      });
+    } else if (arrivalDateEnd < arrivalDateBegin) {
+      this.setState({
+        validateMessage: 'Data Retorno Fim menor que Data Retorno Inicio',
+      });
+    } else if (arrivalDateBegin < departureDateBegin) {
+      this.setState({
+        validateMessage: 'Data Retorno menor que Data Ida',
+      });
+    } else {
+      this.setState({
+        validateMessage: null,
+      });
+      this.navigate();
+    }
   };
 
   handleDateChange = (date, key) => {
@@ -66,7 +103,8 @@ class SearchTrip extends Component {
           date={arrivalDateEnd}
           onDateChange={date => this.handleDateChange(date, 'arrivalDateEnd')}
         />
-        <Button title={'buscar'} onPress={this.navigate} />
+        <Button title={'buscar'} onPress={this.validate} />
+        <Text>{this.state.validateMessage}</Text>
       </View>
     );
   }
