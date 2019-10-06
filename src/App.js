@@ -1,5 +1,10 @@
+import React from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {Provider} from 'react-redux';
+import ReduxThunk from 'redux-thunk';
+import {createStore, applyMiddleware} from 'redux';
+import reducers from './reducers';
 
 import SearchAgency from './containers/searchAgency';
 import SearchTrip from './containers/searchTrip';
@@ -17,5 +22,14 @@ const AppNavigator = createStackNavigator(
     initialRouteName: 'Agency',
   },
 );
+const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
-export default createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppNavigator);
+
+export default () => {
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  );
+};
