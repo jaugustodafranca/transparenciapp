@@ -13,14 +13,16 @@ export default StyleSheet.create({
     borderWidth: 1,
     backgroundColor: 'white',
     flex: 1,
+    marginRight: 10,
   },
   list: {
     marginTop: 20,
     marginBottom: 10,
   },
   headerList: {
-    backgroundColor: '#CFCFCF',
+    backgroundColor: 'white',
     padding: 10,
+    marginBottom: 6,
   },
   headerTitle: {
     fontSize: 20,

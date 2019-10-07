@@ -62,9 +62,9 @@ export const fetchTrips = (
       arrivalDateBegin,
     )}&dataRetornoAte=${parseDate(
       arrivalDateEnd,
-    )}&codigoOrgao=${agencyCode}&pagina=${1}`;
+    )}&codigoOrgao=${agencyCode}&pagina=${page}`;
     api(url).then(res => {
-      console.log('aaaaaaa', res);
+      console.log('bbbbb', res);
       dispatch({
         type: TRIPS_DATA_SUCCESS,
         payload: res,
@@ -78,6 +78,7 @@ export const api = url => {
     method: 'GET',
   })
     .then(res => {
+      console.log('aaaaaaa', res);
       if (res.status == 200) {
         return res.json().then(r => r);
       } else {

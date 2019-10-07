@@ -77,7 +77,7 @@ class SearchAgency extends React.Component {
       <FlatList
         style={styles.list}
         data={this.props.agencies.data}
-        ListHeaderComponent={this.tableHeader}
+        //ListHeaderComponent={this.tableHeader}
         ListFooterComponent={this.renderFooter}
         renderItem={this.renderItemList}
         keyExtractor={item => item.codigo}

@@ -3,6 +3,8 @@ import {View, Button, Text} from 'react-native';
 import DatePicker from '../../components/datepicker';
 import {connect} from 'react-redux';
 import * as Actions from '../../actions';
+import styles from './styles';
+import {validateDates} from '../../utils';
 
 class SearchTrip extends Component {
   constructor(props) {
@@ -30,26 +32,16 @@ class SearchTrip extends Component {
       arrivalDateBegin,
       arrivalDateEnd,
     } = this.state;
-    if (
-      !departureDateBegin ||
-      !departureDateEnd ||
-      !arrivalDateEnd ||
-      !arrivalDateBegin
-    ) {
+
+    const validationResult = validateDates(
+      departureDateBegin,
+      departureDateEnd,
+      arrivalDateBegin,
+      arrivalDateEnd,
+    );
+    if (validationResult) {
       this.setState({
         validateMessage: 'Preencha todos os campos',
-      });
-    } else if (departureDateEnd < departureDateBegin) {
-      this.setState({
-        validateMessage: 'Data Ida Fim menor que Data Ida Inicio',
-      });
-    } else if (arrivalDateEnd < arrivalDateBegin) {
-      this.setState({
-        validateMessage: 'Data Retorno Fim menor que Data Retorno Inicio',
-      });
-    } else if (arrivalDateBegin < departureDateBegin) {
-      this.setState({
-        validateMessage: 'Data Retorno menor que Data Ida',
       });
     } else {
       this.setState({
@@ -76,8 +68,6 @@ class SearchTrip extends Component {
 
     this.props.searchForTrips(
       agency.codigo,
-      parseInt(this.props.page, 10) + 1,
-
       departureDateBegin,
       departureDateEnd,
       arrivalDateBegin,
@@ -98,31 +88,37 @@ class SearchTrip extends Component {
     } = this.state;
 
     return (
-      <View>
-        <DatePicker
-          text={'Data ida inicio'}
-          date={departureDateBegin}
-          onDateChange={date =>
-            this.handleDateChange(date, 'departureDateBegin')
-          }
-        />
-        <DatePicker
-          text={'Data ida fim'}
-          date={departureDateEnd}
-          onDateChange={date => this.handleDateChange(date, 'departureDateEnd')}
-        />
-        <DatePicker
-          text={'Data retorno inicio'}
-          date={arrivalDateBegin}
-          onDateChange={date => this.handleDateChange(date, 'arrivalDateBegin')}
-        />
-        <DatePicker
-          text={'Data retorno fim'}
-          date={arrivalDateEnd}
-          onDateChange={date => this.handleDateChange(date, 'arrivalDateEnd')}
-        />
-        <Button title={'buscar'} onPress={this.validate} />
-        <Text>{this.state.validateMessage}</Text>
+      <View style={styles.wrapper}>
+        <View style={styles.container}>
+          <DatePicker
+            text={'Data ida inicio'}
+            date={departureDateBegin}
+            onDateChange={date =>
+              this.handleDateChange(date, 'departureDateBegin')
+            }
+          />
+          <DatePicker
+            text={'Data ida fim'}
+            date={departureDateEnd}
+            onDateChange={date =>
+              this.handleDateChange(date, 'departureDateEnd')
+            }
+          />
+          <DatePicker
+            text={'Data retorno inicio'}
+            date={arrivalDateBegin}
+            onDateChange={date =>
+              this.handleDateChange(date, 'arrivalDateBegin')
+            }
+          />
+          <DatePicker
+            text={'Data retorno fim'}
+            date={arrivalDateEnd}
+            onDateChange={date => this.handleDateChange(date, 'arrivalDateEnd')}
+          />
+          <Button title={'buscar'} onPress={this.validate} />
+          <Text>{this.state.validateMessage}</Text>
+        </View>
       </View>
     );
   }
@@ -131,7 +127,6 @@ class SearchTrip extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   searchForTrips: (
     agencyCode,
-    page,
     departureDateBegin,
     departureDateEnd,
     arrivalDateBegin,
@@ -140,7 +135,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(
       Actions.fetchTrips(
         agencyCode,
-        page,
+        1,
         departureDateBegin,
         departureDateEnd,
         arrivalDateBegin,

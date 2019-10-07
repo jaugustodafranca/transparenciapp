@@ -78,7 +78,7 @@ const transparencia = (state = INITIAL_STATE, actions) => {
           ...state.trips,
           loading: false,
           data: actions.payload,
-          page: state.trips.page,
+          page: 1,
         },
       };
     default:
