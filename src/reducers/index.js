@@ -3,7 +3,9 @@ import {combineReducers} from 'redux';
 import {
   AGENCIES_DATA,
   AGENCIES_DATA_SUCCESS,
+  AGENCIES_DATA__NEXT_PAGE_SUCCESS,
   AGENCIES_DATA_ERROR,
+  AGENCIES_MAX_PAGE,
   TRIPS_DATA,
   TRIPS_DATA_SUCCESS,
   TRIPS_DATA_ERROR,
@@ -15,6 +17,7 @@ const INITIAL_STATE = {
     error: null,
     loading: false,
     page: 0,
+    maxPage: null,
   },
   trips: {
     data: [],
@@ -40,7 +43,25 @@ const transparencia = (state = INITIAL_STATE, actions) => {
           ...state.agencies,
           loading: false,
           data: actions.payload,
+          page: 1,
+        },
+      };
+    case AGENCIES_DATA__NEXT_PAGE_SUCCESS:
+      return {
+        ...state,
+        agencies: {
+          ...state.agencies,
+          loading: false,
+          data: [...state.agencies.data, ...actions.payload],
           page: state.agencies.page + 1,
+        },
+      };
+    case AGENCIES_MAX_PAGE:
+      return {
+        ...state,
+        agencies: {
+          ...state.agencies,
+          maxPage: actions.payload,
         },
       };
     case TRIPS_DATA:
@@ -57,7 +78,7 @@ const transparencia = (state = INITIAL_STATE, actions) => {
           ...state.trips,
           loading: false,
           data: actions.payload,
-          page: state.trips.page + 1,
+          page: state.trips.page,
         },
       };
     default:

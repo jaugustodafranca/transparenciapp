@@ -20,6 +20,7 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Agency',
+    headerLayoutPreset: 'center',
   },
 );
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));

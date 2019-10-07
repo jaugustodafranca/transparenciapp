@@ -3,6 +3,10 @@ import {View, FlatList, TouchableOpacity, Text} from 'react-native';
 import moment from 'moment';
 
 import styles from './styles.js';
+
+import {connect} from 'react-redux';
+import * as Actions from '../../actions';
+
 import mockupData from './mockupData.json';
 
 class SearchTripResult extends Component {
@@ -11,18 +15,21 @@ class SearchTripResult extends Component {
     this.state = {};
   }
 
-  static navigationOptions = ({navigation}) => {
-    const departureDateBegin = moment(
-      navigation.getParam('departureDateBegin', ''),
-    ).format('DD/MM/YYYY');
-    const arrivalDateEnd = moment(
-      navigation.getParam('arrivalDateEnd', ''),
-    ).format('DD/MM/YYYY');
-    const title = `${departureDateBegin} - ${arrivalDateEnd}`;
-    return {
-      title,
-    };
-  };
+  renderList() {
+    if (this.props.trips.data && this.props.trips.data.length < 1) {
+      return <Text>abc</Text>;
+    }
+    return (
+      <FlatList
+        style={styles.list}
+        data={this.props.trips.data}
+        showsVerticalScrollIndicator={false}
+        //ListHeaderComponent={tableHeader()}
+        renderItem={this.renderItemList}
+        keyExtractor={item => item.id + ''}
+      />
+    );
+  }
 
   renderItemList = ({item}) => (
     <TouchableOpacity
@@ -35,19 +42,21 @@ class SearchTripResult extends Component {
   );
 
   render() {
-    return (
-      <View>
-        <FlatList
-          style={styles.list}
-          data={mockupData}
-          showsVerticalScrollIndicator={false}
-          //ListHeaderComponent={tableHeader()}
-          renderItem={this.renderItemList}
-          keyExtractor={item => item.id + ''}
-        />
-      </View>
-    );
+    return <View>{this.renderList()}</View>;
   }
 }
 
-export default SearchTripResult;
+const mapDispatchToProps = dispatch => ({
+  getSearchAgencies: () => dispatch(Actions.fetchAgencies()),
+});
+
+function mapStateToProps(state) {
+  return {
+    trips: state.transparencia.trips,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SearchTripResult);

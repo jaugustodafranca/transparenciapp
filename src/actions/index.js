@@ -3,6 +3,8 @@ import moment from 'moment';
 export const AGENCIES_DATA = 'agenciesData';
 export const AGENCIES_DATA_SUCCESS = 'agenciesDataSuccess';
 export const AGENCIES_DATA_ERROR = 'agenciesDataError';
+export const AGENCIES_DATA__NEXT_PAGE_SUCCESS = 'agenciesDataNextPageSuccess';
+export const AGENCIES_MAX_PAGE = 'agenciesMaxPage';
 
 export const TRIPS_DATA = 'tripsData';
 export const TRIPS_DATA_SUCCESS = 'tripsDataSuccess';
@@ -10,24 +12,42 @@ export const TRIPS_DATA_ERROR = 'trpisDataError';
 
 const BASE_URL = 'http://www.transparencia.gov.br/api-de-dados/';
 
-export const fetchAgencies = a => {
-  console.log('aaa');
+export const fetchAgencies = (text, page = 1) => {
+  const encodedText = encodeURIComponent(text);
+
   return dispatch => {
-    api('orgaos-siafi?descricao=santa%20catarina&pagina=1').then(res => {
-      console.log(res);
-      dispatch({
-        type: AGENCIES_DATA_SUCCESS,
-        payload: res,
-      });
+    dispatch({
+      type: AGENCIES_DATA,
+    });
+
+    api(`orgaos-siafi?descricao=${encodedText}&pagina=${page}`).then(res => {
+      if (page == 1) {
+        dispatch({
+          type: AGENCIES_DATA_SUCCESS,
+          payload: res,
+        });
+      } else {
+        dispatch({
+          type: AGENCIES_DATA__NEXT_PAGE_SUCCESS,
+          payload: res,
+        });
+      }
+      if (res.length < 15) {
+        dispatch({
+          type: AGENCIES_MAX_PAGE,
+          payload: page,
+        });
+      }
     });
   };
 };
 
-export const parseDate = date => moment(date).format('DD/MM/YYYY');
+export const parseDate = date =>
+  encodeURIComponent(moment(date).format('DD/MM/YYYY'));
 
 export const fetchTrips = (
   agencyCode,
-  page,
+  page = 1,
   departureDateBegin,
   departureDateEnd,
   arrivalDateBegin,
@@ -42,13 +62,9 @@ export const fetchTrips = (
       arrivalDateBegin,
     )}&dataRetornoAte=${parseDate(
       arrivalDateEnd,
-    )}&codigoOrgao=${agencyCode}&pagina=${parseInt(page, 10) + 1}`;
-    const encodedURL = encodeURIComponent(url);
-
-    console.log(encodedURL);
-
-    api(encodedURL).then(res => {
-      console.log(res);
+    )}&codigoOrgao=${agencyCode}&pagina=${1}`;
+    api(url).then(res => {
+      console.log('aaaaaaa', res);
       dispatch({
         type: TRIPS_DATA_SUCCESS,
         payload: res,
@@ -62,7 +78,11 @@ export const api = url => {
     method: 'GET',
   })
     .then(res => {
-      return res.json().then(r => r);
+      if (res.status == 200) {
+        return res.json().then(r => r);
+      } else {
+        return res.text().then(r => r);
+      }
     })
     .catch(err => {
       console.log(err);
