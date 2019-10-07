@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, FlatList, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import moment from 'moment';
 
 import styles from './styles.js';
@@ -10,29 +16,77 @@ import * as Actions from '../../actions';
 class SearchTripResult extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      searchValues: this.props.navigation.getParam('searchValues', {}),
+    };
   }
 
   static navigationOptions = ({navigation}) => {
-    const departureDateBegin = navigation.getParam('departureDateBegin', '');
-    const arrivalDateEnd = navigation.getParam('arrivalDateEnd', '');
+    const {departureDateBegin, arrivalDateEnd} = navigation.getParam(
+      'searchValues',
+      {},
+    );
+    const format = date => moment(date).format('MM/DD/YYYY');
     return {
-      title: `${departureDateBegin} - ${arrivalDateEnd}`,
+      title: `${format(departureDateBegin)} - ${format(arrivalDateEnd)}`,
     };
   };
 
+  getSearchTripsNextPage() {
+    const {
+      agency,
+      departureDateBegin,
+      departureDateEnd,
+      arrivalDateBegin,
+      arrivalDateEnd,
+    } = this.state.searchValues;
+    const page = this.props.trips.page;
+    this.props.getSearchTripsNextPage(
+      agency,
+      parseInt(page, 10) + 1,
+      departureDateBegin,
+      departureDateEnd,
+      arrivalDateBegin,
+      arrivalDateEnd,
+    );
+  }
+
+  renderFooter = () => {
+    const {
+      trips: {loading, data, maxPage, page},
+    } = this.props;
+
+    if (!loading && data && data.length > 0) {
+      if (maxPage && maxPage <= page) {
+        return null;
+      }
+      return (
+        <TouchableOpacity
+          style={styles.loadMore}
+          onPress={() => this.getSearchTripsNextPage()}>
+          <Text style={styles.loadMoreText}>Carregar mais</Text>
+        </TouchableOpacity>
+      );
+    }
+    return <ActivityIndicator size="small" />;
+  };
+
   renderList() {
-    if (this.props.trips.data && this.props.trips.data.length < 1) {
-      return <Text>abc</Text>;
+    if (
+      this.props.trips.data &&
+      this.props.trips.data.length < 1 &&
+      this.props.trips.loading
+    ) {
+      return <ActivityIndicator size="large" />;
     }
     return (
       <FlatList
         style={styles.list}
         data={this.props.trips.data}
         showsVerticalScrollIndicator={false}
-        //ListHeaderComponent={tableHeader()}
+        ListFooterComponent={this.renderFooter}
         renderItem={this.renderItemList}
-        keyExtractor={item => item.id + ''}
+        keyExtractor={(item, index) => index + ''}
       />
     );
   }
@@ -43,17 +97,38 @@ class SearchTripResult extends Component {
       onPress={() =>
         this.props.navigation.navigate('TripDetails', {trip: item})
       }>
-      <Text style={styles.boxText}>{item.dimViagem.motivo}</Text>
+      <Text style={styles.boxText}>
+        {item && item.dimViagem && item.dimViagem.motivo}
+      </Text>
     </TouchableOpacity>
   );
 
   render() {
+    console.log(this.props.trips.data);
+
     return <View style={styles.container}>{this.renderList()}</View>;
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getSearchAgencies: () => dispatch(Actions.fetchAgencies()),
+  getSearchTripsNextPage: (
+    agencyCode,
+    page,
+    departureDateBegin,
+    departureDateEnd,
+    arrivalDateBegin,
+    arrivalDateEnd,
+  ) =>
+    dispatch(
+      Actions.fetchTrips(
+        agencyCode,
+        page,
+        departureDateBegin,
+        departureDateEnd,
+        arrivalDateBegin,
+        arrivalDateEnd,
+      ),
+    ),
 });
 
 function mapStateToProps(state) {

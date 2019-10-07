@@ -15,4 +15,9 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 15,
   },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
+  },
 });

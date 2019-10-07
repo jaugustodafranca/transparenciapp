@@ -9,6 +9,8 @@ export const AGENCIES_MAX_PAGE = 'agenciesMaxPage';
 export const TRIPS_DATA = 'tripsData';
 export const TRIPS_DATA_SUCCESS = 'tripsDataSuccess';
 export const TRIPS_DATA_ERROR = 'trpisDataError';
+export const TRIPS_MAX_PAGE = 'tripsMaxPage';
+export const TRIPS_DATA__NEXT_PAGE_SUCCESS = 'tripsDataNextPageSuccess';
 
 const BASE_URL = 'http://www.transparencia.gov.br/api-de-dados/';
 
@@ -56,6 +58,10 @@ export const fetchTrips = (
   return dispatch => {
     console.log(page);
 
+    dispatch({
+      type: TRIPS_DATA,
+    });
+
     const url = `viagens?dataIdaDe=${parseDate(
       departureDateBegin,
     )}&dataIdaAte=${parseDate(departureDateEnd)}&dataRetornoDe=${parseDate(
@@ -64,11 +70,23 @@ export const fetchTrips = (
       arrivalDateEnd,
     )}&codigoOrgao=${agencyCode}&pagina=${page}`;
     api(url).then(res => {
-      console.log('bbbbb', res);
-      dispatch({
-        type: TRIPS_DATA_SUCCESS,
-        payload: res,
-      });
+      if (page === 1) {
+        dispatch({
+          type: TRIPS_DATA_SUCCESS,
+          payload: res,
+        });
+      } else {
+        dispatch({
+          type: TRIPS_DATA__NEXT_PAGE_SUCCESS,
+          payload: res,
+        });
+      }
+      if (res.length < 15) {
+        dispatch({
+          type: TRIPS_MAX_PAGE,
+          payload: page,
+        });
+      }
     });
   };
 };

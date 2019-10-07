@@ -8,6 +8,8 @@ import {
   AGENCIES_MAX_PAGE,
   TRIPS_DATA,
   TRIPS_DATA_SUCCESS,
+  TRIPS_DATA__NEXT_PAGE_SUCCESS,
+  TRIPS_MAX_PAGE,
   TRIPS_DATA_ERROR,
 } from '../actions';
 
@@ -24,6 +26,7 @@ const INITIAL_STATE = {
     error: null,
     loading: false,
     page: 0,
+    maxPage: null,
   },
 };
 
@@ -44,6 +47,7 @@ const transparencia = (state = INITIAL_STATE, actions) => {
           loading: false,
           data: actions.payload,
           page: 1,
+          maxPage: null,
         },
       };
     case AGENCIES_DATA__NEXT_PAGE_SUCCESS:
@@ -79,6 +83,24 @@ const transparencia = (state = INITIAL_STATE, actions) => {
           loading: false,
           data: actions.payload,
           page: 1,
+        },
+      };
+    case TRIPS_DATA__NEXT_PAGE_SUCCESS:
+      return {
+        ...state,
+        trips: {
+          ...state.trips,
+          loading: false,
+          data: [...state.trips.data, ...actions.payload],
+          page: state.trips.page + 1,
+        },
+      };
+    case TRIPS_MAX_PAGE:
+      return {
+        ...state,
+        trips: {
+          ...state.trips,
+          maxPage: actions.payload,
         },
       };
     default:

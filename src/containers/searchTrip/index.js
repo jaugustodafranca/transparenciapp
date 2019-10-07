@@ -39,9 +39,11 @@ class SearchTrip extends Component {
       arrivalDateBegin,
       arrivalDateEnd,
     );
+
+    console.log(validationResult);
     if (validationResult) {
       this.setState({
-        validateMessage: 'Preencha todos os campos',
+        validateMessage: validationResult,
       });
     } else {
       this.setState({
@@ -74,8 +76,13 @@ class SearchTrip extends Component {
       arrivalDateEnd,
     );
     this.props.navigation.navigate('TripResult', {
-      departureDateBegin,
-      arrivalDateEnd,
+      searchValues: {
+        agency: agency.codigo,
+        departureDateBegin,
+        departureDateEnd,
+        arrivalDateBegin,
+        arrivalDateEnd,
+      },
     });
   };
 
@@ -117,7 +124,7 @@ class SearchTrip extends Component {
             onDateChange={date => this.handleDateChange(date, 'arrivalDateEnd')}
           />
           <Button title={'buscar'} onPress={this.validate} />
-          <Text>{this.state.validateMessage}</Text>
+          <Text style={styles.error}>{this.state.validateMessage}</Text>
         </View>
       </View>
     );
@@ -144,9 +151,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     ),
 });
 function mapStateToProps(state) {
-  return {
-    page: state.transparencia.agencies.page,
-  };
+  return {};
 }
 
 export default connect(
