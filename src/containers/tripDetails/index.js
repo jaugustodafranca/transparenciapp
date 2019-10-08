@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
-import moment from 'moment';
+import {View, Text} from 'react-native';
 
 import styles from './styles';
 
@@ -12,30 +11,28 @@ const TripDetails = ({navigation}) => {
         {`Data: ${trip.dataInicioAfastamento} - ${trip.dataFimAfastamento}`}
       </Text>
       <Text>Nome: {trip.pessoa.nome}</Text>
-      <Text>Motivo</Text>
+      <Text>Motivo: {trip.dimViagem && trip.dimViagem.motivo}</Text>
       <Text>Valores</Text>
-      <Text>Valor Total Restituicao: R${trip.valorTotalRestituicao}</Text>
+      <Text>Valor Restituicao: R${trip.valorTotalRestituicao}</Text>
 
-      <Text>
-        Valor Total Taxa Agenciamento: R${trip.valorTotalTaxaAgenciamento}
-      </Text>
+      <Text>Valor Taxa Agenciamento: R${trip.valorTotalTaxaAgenciamento}</Text>
 
       <Text>Valor Multa: R${trip.valorMulta}</Text>
 
-      <Text>Valor Total Diarias: R${trip.valorTotalDiarias}</Text>
+      <Text>Valor Diarias: R${trip.valorTotalDiarias}</Text>
 
-      <Text>Valor Total Passagem: R${trip.valorTotalPassagem}</Text>
+      <Text>Valor Passagem: R${trip.valorTotalPassagem}</Text>
+
+      <Text>Valor Devolucao: R${trip.valorTotalDevolucao}</Text>
 
       <Text>Valor Total Viagem: R${trip.valorTotalViagem}</Text>
-
-      <Text>Valor Total Devolucao: R${trip.valorTotalDevolucao}</Text>
     </View>
   );
 };
 
 TripDetails.navigationOptions = ({navigation}) => {
   const trip = navigation.getParam('trip', {});
-  const title = ' - ';
+  const title = `${trip.id}`;
   return {
     title,
   };

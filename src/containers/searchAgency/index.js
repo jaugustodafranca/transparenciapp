@@ -67,17 +67,25 @@ class SearchAgency extends React.Component {
   );
 
   renderList() {
-    if (this.props.agencies.data && this.props.agencies.data.length < 1) {
-      if (this.props.agencies.loading) {
-        return <ActivityIndicator size="large" />;
-      }
+    if (this.props.agencies.loading && !this.props.agencies.data) {
+      return <ActivityIndicator size="large" />;
+    }
+
+    if (!this.props.agencies.data) {
       return;
+    }
+
+    if (this.props.agencies.data && this.props.agencies.data.length < 1) {
+      return (
+        <View style={styles.noResult}>
+          <Text style={styles.noResultText}>Nenhum resultado encontrado!</Text>
+        </View>
+      );
     }
     return (
       <FlatList
         style={styles.list}
         data={this.props.agencies.data}
-        //ListHeaderComponent={this.tableHeader}
         ListFooterComponent={this.renderFooter}
         renderItem={this.renderItemList}
         keyExtractor={item => item.codigo}
@@ -100,7 +108,7 @@ class SearchAgency extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View>
+        <View style={styles.header}>
           <Text style={styles.title}>Procurar Orgão do Governo Federal</Text>
           <View style={{flexDirection: 'row'}}>
             <TextInput
@@ -115,8 +123,8 @@ class SearchAgency extends React.Component {
               <Text style={styles.buscarText}>Buscar</Text>
             </TouchableOpacity>
           </View>
-          {this.renderList()}
         </View>
+        {this.renderList()}
       </View>
     );
   }

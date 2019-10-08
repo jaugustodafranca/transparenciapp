@@ -68,7 +68,14 @@ class SearchTripResult extends Component {
         </TouchableOpacity>
       );
     }
-    return <ActivityIndicator size="small" />;
+    if (loading) {
+      return <ActivityIndicator size="small" />;
+    }
+    return (
+      <View style={styles.noResult}>
+        <Text style={styles.noResultText}>Nenhum resultado encontrado!</Text>
+      </View>
+    );
   };
 
   renderList() {
@@ -97,8 +104,13 @@ class SearchTripResult extends Component {
       onPress={() =>
         this.props.navigation.navigate('TripDetails', {trip: item})
       }>
+      <Text style={styles.smallBoxText}>
+        {`${item && item.id} - ${item &&
+          item.unidadeGestoraResponsavel &&
+          item.unidadeGestoraResponsavel.nome}`}
+      </Text>
       <Text style={styles.boxText}>
-        {item && item.dimViagem && item.dimViagem.motivo}
+        {item && item.pessoa && item.pessoa.nome}
       </Text>
     </TouchableOpacity>
   );

@@ -5,6 +5,8 @@ export default StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Roboto',
     fontWeight: '300',
+    textAlign: 'center',
+    marginVertical: 10,
   },
   inputSearch: {
     paddingLeft: 20,
@@ -14,6 +16,11 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     marginRight: 10,
+  },
+  header: {
+    backgroundColor: '#efefef',
+    width: '100%',
+    height: 100,
   },
   list: {
     marginTop: 20,
@@ -81,5 +88,10 @@ export default StyleSheet.create({
   loadMoreText: {
     color: 'white',
     textAlign: 'center',
+  },
+  noResult: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

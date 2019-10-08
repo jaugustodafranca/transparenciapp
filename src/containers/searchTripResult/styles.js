@@ -18,6 +18,7 @@ export default StyleSheet.create({
     marginHorizontal: 5,
   },
   boxItem: {
+    flex: 1,
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     borderRadius: 2,
@@ -27,9 +28,19 @@ export default StyleSheet.create({
     paddingRight: 16,
     marginTop: 0,
     marginBottom: 6,
+    alignSelf: 'stretch',
+  },
+  smallBoxText: {
+    fontSize: 10,
   },
   container: {
-    alignItems: 'center',
+    alignItems: 'stretch',
+    flex: 1,
     backgroundColor: '#efefef',
+  },
+  noResult: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

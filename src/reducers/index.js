@@ -15,14 +15,14 @@ import {
 
 const INITIAL_STATE = {
   agencies: {
-    data: [],
+    data: null,
     error: null,
     loading: false,
     page: 0,
     maxPage: null,
   },
   trips: {
-    data: [],
+    data: null,
     error: null,
     loading: false,
     page: 0,

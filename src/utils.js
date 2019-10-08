@@ -13,11 +13,11 @@ export const validateDates = (
     !arrivalDateBegin
   ) {
     return 'Preencha todos os campos';
-  } else if (departureDateEnd < departureDateBegin) {
+  } else if (format(departureDateEnd) < format(departureDateBegin)) {
     return 'Data Ida Fim menor que Data Ida Inicio';
-  } else if (arrivalDateEnd < arrivalDateBegin) {
+  } else if (format(arrivalDateEnd) < format(arrivalDateBegin)) {
     return 'Data Retorno Fim menor que Data Retorno Inicio';
-  } else if (arrivalDateBegin < departureDateBegin) {
+  } else if (format(arrivalDateBegin) < format(departureDateBegin)) {
     return 'Data Retorno menor que Data Ida';
   } else if (
     moment(departureDateEnd).diff(moment(departureDateBegin), 'months', true) >
@@ -29,3 +29,5 @@ export const validateDates = (
     return null;
   }
 };
+
+const format = date => moment(date).format('DD/MM/YYYY');
