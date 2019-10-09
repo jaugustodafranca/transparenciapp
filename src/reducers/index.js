@@ -83,6 +83,7 @@ const transparencia = (state = INITIAL_STATE, actions) => {
           loading: false,
           data: actions.payload,
           page: 1,
+          maxPage: null,
         },
       };
     case TRIPS_DATA__NEXT_PAGE_SUCCESS:

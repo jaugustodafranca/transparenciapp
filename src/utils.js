@@ -30,4 +30,4 @@ export const validateDates = (
   }
 };
 
-const format = date => moment(date).format('DD/MM/YYYY');
+const format = date => moment(date).startOf('day');

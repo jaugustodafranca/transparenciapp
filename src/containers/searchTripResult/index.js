@@ -71,30 +71,53 @@ class SearchTripResult extends Component {
     if (loading) {
       return <ActivityIndicator size="small" />;
     }
-    return (
-      <View style={styles.noResult}>
-        <Text style={styles.noResultText}>Nenhum resultado encontrado!</Text>
-      </View>
-    );
+    return <View />;
   };
 
   renderList() {
+    if (!this.props.trips.data && this.props.trips.loading) {
+      return <ActivityIndicator size="large" />;
+    }
     if (
       this.props.trips.data &&
       this.props.trips.data.length < 1 &&
-      this.props.trips.loading
+      !this.props.trips.loading
     ) {
-      return <ActivityIndicator size="large" />;
+      return (
+        <View style={styles.noResult}>
+          <Text style={styles.noResultText}>Nenhum resultado encontrado!</Text>
+        </View>
+      );
     }
+
     return (
-      <FlatList
-        style={styles.list}
-        data={this.props.trips.data}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={this.renderFooter}
-        renderItem={this.renderItemList}
-        keyExtractor={(item, index) => index + ''}
-      />
+      <React.Fragment>
+        {this.renderTotalSpent()}
+        <FlatList
+          style={styles.list}
+          data={this.props.trips.data}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={this.renderFooter}
+          renderItem={this.renderItemList}
+          keyExtractor={(item, index) => index + ''}
+        />
+      </React.Fragment>
+    );
+  }
+
+  renderTotalSpent() {
+    let price = 0;
+    (this.props.trips.data || []).forEach(trip => {
+      if (trip && trip.valorTotalViagem) {
+        price += parseFloat(trip.valorTotalViagem) || 0;
+      }
+    });
+    return (
+      <View style={styles.spentView}>
+        <Text style={styles.spent}>{`Custos das Viagem R$${price.toFixed(
+          2,
+        )}`}</Text>
+      </View>
     );
   }
 

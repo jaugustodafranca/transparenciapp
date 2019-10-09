@@ -13,7 +13,6 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   list: {
-    marginTop: 20,
     marginBottom: 10,
     marginHorizontal: 5,
   },
@@ -42,5 +41,13 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  spentView: {
+    backgroundColor: '#efefef',
+  },
+  spent: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 16,
   },
 });
