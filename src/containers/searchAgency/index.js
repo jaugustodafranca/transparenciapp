@@ -29,12 +29,6 @@ class SearchAgency extends React.Component {
     };
   };
 
-  tableHeader = () => (
-    <View style={styles.headerList}>
-      <Text style={styles.headerTitle}>Resultados:</Text>
-    </View>
-  );
-
   renderFooter = () => {
     const {
       agencies: {loading, data, maxPage, page},
@@ -67,7 +61,16 @@ class SearchAgency extends React.Component {
   );
 
   renderList() {
-    if (this.props.agencies.loading && !this.props.agencies.data) {
+    if (this.props.agencies.showErro) {
+      return (
+        <View style={styles.noResult}>
+          <Text style={styles.errorText}>
+            Erro: {this.props.agencies.errorMessage}
+          </Text>
+        </View>
+      );
+    }
+    if (this.props.agencies.loading) {
       return <ActivityIndicator size="large" />;
     }
 

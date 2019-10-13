@@ -25,6 +25,7 @@ export default StyleSheet.create({
   list: {
     marginTop: 20,
     marginBottom: 10,
+    width: '100%',
   },
   headerList: {
     backgroundColor: 'white',
@@ -93,5 +94,8 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
   },
 });

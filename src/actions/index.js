@@ -28,7 +28,7 @@ export const fetchAgencies = (text, page = 1) => {
           type: AGENCIES_DATA_SUCCESS,
           payload: res,
         });
-      } else {
+      } else if (page > 1) {
         dispatch({
           type: AGENCIES_DATA__NEXT_PAGE_SUCCESS,
           payload: res,
@@ -38,6 +38,12 @@ export const fetchAgencies = (text, page = 1) => {
         dispatch({
           type: AGENCIES_MAX_PAGE,
           payload: page,
+        });
+      }
+      if (res.message === 'Network request failed') {
+        dispatch({
+          type: AGENCIES_DATA_ERROR,
+          payload: 'Verifique sua conexão e tente novamente.',
         });
       }
     });
@@ -87,6 +93,12 @@ export const fetchTrips = (
           payload: page,
         });
       }
+      if (res.message === 'Network request failed') {
+        dispatch({
+          type: TRIPS_DATA_ERROR,
+          payload: 'Verifique sua conexão e tente novamente.',
+        });
+      }
     });
   };
 };
@@ -96,15 +108,16 @@ export const api = url => {
     method: 'GET',
   })
     .then(res => {
-      console.log('aaaaaaa', res);
       if (res.status == 200) {
+        console.log('ENTROU NO 200', res);
         return res.json().then(r => r);
       } else {
+        console.log('ENTROU NO ELSE', res);
         return res.text().then(r => r);
       }
     })
-    .catch(err => {
-      console.log(err);
-      return [];
+    .catch(error => {
+      console.log(error.message);
+      return error;
     });
 };

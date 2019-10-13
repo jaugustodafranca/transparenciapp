@@ -75,6 +75,15 @@ class SearchTripResult extends Component {
   };
 
   renderList() {
+    if (this.props.trips.showErro) {
+      return (
+        <View style={styles.noResult}>
+          <Text style={styles.errorText}>
+            Erro: {this.props.trips.errorMessage}
+          </Text>
+        </View>
+      );
+    }
     if (!this.props.trips.data && this.props.trips.loading) {
       return <ActivityIndicator size="large" />;
     }

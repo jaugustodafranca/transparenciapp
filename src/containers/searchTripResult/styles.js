@@ -42,6 +42,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  errorText: {
+    color: 'red',
+  },
   spentView: {
     backgroundColor: '#efefef',
   },
