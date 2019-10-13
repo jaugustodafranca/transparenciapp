@@ -114,7 +114,7 @@ class SearchTripResult extends Component {
     });
     return (
       <View style={styles.spentView}>
-        <Text style={styles.spent}>{`Custos das Viagem R$${price.toFixed(
+        <Text style={styles.spent}>{`Custos das Viagem R$ ${price.toFixed(
           2,
         )}`}</Text>
       </View>

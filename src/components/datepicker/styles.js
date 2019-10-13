@@ -5,6 +5,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
+    marginBottom: 10,
   },
   text: {
     flex: 1,

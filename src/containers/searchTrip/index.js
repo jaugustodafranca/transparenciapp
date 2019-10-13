@@ -98,6 +98,7 @@ class SearchTrip extends Component {
       <View style={styles.wrapper}>
         <View style={styles.container}>
           <DatePicker
+            style={styles.data}
             text={'Data ida inicio'}
             date={departureDateBegin}
             onDateChange={date =>
@@ -105,6 +106,7 @@ class SearchTrip extends Component {
             }
           />
           <DatePicker
+            style={styles.data}
             text={'Data ida fim'}
             date={departureDateEnd}
             onDateChange={date =>
@@ -112,6 +114,7 @@ class SearchTrip extends Component {
             }
           />
           <DatePicker
+            style={styles.data}
             text={'Data retorno inicio'}
             date={arrivalDateBegin}
             onDateChange={date =>
@@ -119,6 +122,7 @@ class SearchTrip extends Component {
             }
           />
           <DatePicker
+            style={styles.data}
             text={'Data retorno fim'}
             date={arrivalDateEnd}
             onDateChange={date => this.handleDateChange(date, 'arrivalDateEnd')}
