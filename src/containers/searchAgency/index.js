@@ -70,7 +70,7 @@ class SearchAgency extends React.Component {
         </View>
       );
     }
-    if (this.props.agencies.loading) {
+    if (this.props.agencies.loading && !this.props.agencies.data) {
       return <ActivityIndicator size="large" />;
     }
 

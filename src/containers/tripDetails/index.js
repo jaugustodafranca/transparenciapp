@@ -14,12 +14,12 @@ const TripDetails = ({navigation}) => {
       <View style={styles.label}>
         <Text style={styles.title}>Data:</Text>
         <Text style={styles.data}>
-          {`DATA: ${trip.dataInicioAfastamento} - ${trip.dataFimAfastamento}`}
+          {`${trip.dataInicioAfastamento} - ${trip.dataFimAfastamento}`}
         </Text>
       </View>
       <View style={styles.label}>
         <Text style={styles.title}>Motivo:</Text>
-        <Text>Motivo: {trip.dimViagem && trip.dimViagem.motivo}</Text>
+        <Text>{trip.dimViagem && trip.dimViagem.motivo}</Text>
       </View>
       <View style={styles.label}>
         <Text style={styles.title}>Valores:</Text>

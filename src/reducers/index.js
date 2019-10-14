@@ -79,11 +79,23 @@ const transparencia = (state = INITIAL_STATE, actions) => {
         },
       };
     case TRIPS_DATA:
-      return {...state, trips: {...state.trips, loading: true}};
+      return {
+        ...state,
+        trips: {
+          ...state.trips,
+          loading: true,
+          showErro: false,
+        },
+      };
     case TRIPS_DATA_ERROR:
       return {
         ...state,
-        trips: {loading: false, showErro: true, errorMessage: actions.payload},
+        trips: {
+          loading: false,
+          showErro: true,
+          errorMessage: actions.payload,
+          data: null,
+        },
       };
     case TRIPS_DATA_SUCCESS:
       return {
@@ -114,7 +126,6 @@ const transparencia = (state = INITIAL_STATE, actions) => {
         trips: {
           ...state.trips,
           maxPage: actions.payload,
-          showErro: false,
         },
       };
     default:

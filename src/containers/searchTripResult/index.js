@@ -26,7 +26,7 @@ class SearchTripResult extends Component {
       'searchValues',
       {},
     );
-    const format = date => moment(date).format('MM/DD/YYYY');
+    const format = date => moment(date).format('DD/MM/YYYY');
     return {
       title: `${format(departureDateBegin)} - ${format(arrivalDateEnd)}`,
     };
@@ -75,7 +75,7 @@ class SearchTripResult extends Component {
   };
 
   renderList() {
-    if (this.props.trips.showErro) {
+    if (this.props.trips.showErro && !this.props.trips.loading) {
       return (
         <View style={styles.noResult}>
           <Text style={styles.errorText}>
@@ -116,11 +116,17 @@ class SearchTripResult extends Component {
 
   renderTotalSpent() {
     let price = 0;
-    (this.props.trips.data || []).forEach(trip => {
-      if (trip && trip.valorTotalViagem) {
-        price += parseFloat(trip.valorTotalViagem) || 0;
-      }
-    });
+    if (
+      this.props.trips &&
+      this.props.trips.data &&
+      Array.isArray(this.props.trips.data)
+    ) {
+      this.props.trips.data.forEach(trip => {
+        if (trip && trip.valorTotalViagem) {
+          price += parseFloat(trip.valorTotalViagem) || 0;
+        }
+      });
+    }
     return (
       <View style={styles.spentView}>
         <Text style={styles.spent}>{`Custos das Viagem R$ ${price.toFixed(
@@ -144,12 +150,11 @@ class SearchTripResult extends Component {
       <Text style={styles.boxText}>
         {item && item.pessoa && item.pessoa.nome}
       </Text>
+      <Text style={styles.smallBoxText}>RS{item && item.valorTotalViagem}</Text>
     </TouchableOpacity>
   );
 
   render() {
-    console.log(this.props.trips.data);
-
     return <View style={styles.container}>{this.renderList()}</View>;
   }
 }

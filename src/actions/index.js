@@ -62,8 +62,6 @@ export const fetchTrips = (
   arrivalDateEnd,
 ) => {
   return dispatch => {
-    console.log(page);
-
     dispatch({
       type: TRIPS_DATA,
     });
@@ -76,7 +74,12 @@ export const fetchTrips = (
       arrivalDateEnd,
     )}&codigoOrgao=${agencyCode}&pagina=${page}`;
     api(url).then(res => {
-      if (page === 1) {
+      if (res.message === 'Network request failed') {
+        dispatch({
+          type: TRIPS_DATA_ERROR,
+          payload: 'Verifique sua conexão e tente novamente.',
+        });
+      } else if (page === 1) {
         dispatch({
           type: TRIPS_DATA_SUCCESS,
           payload: res,
@@ -93,12 +96,6 @@ export const fetchTrips = (
           payload: page,
         });
       }
-      if (res.message === 'Network request failed') {
-        dispatch({
-          type: TRIPS_DATA_ERROR,
-          payload: 'Verifique sua conexão e tente novamente.',
-        });
-      }
     });
   };
 };
@@ -109,10 +106,8 @@ export const api = url => {
   })
     .then(res => {
       if (res.status == 200) {
-        console.log('ENTROU NO 200', res);
         return res.json().then(r => r);
       } else {
-        console.log('ENTROU NO ELSE', res);
         return res.text().then(r => r);
       }
     })
